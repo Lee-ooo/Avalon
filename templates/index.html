@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Avalon 游戏</title>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div id="game">
+        <h1>Avalon 游戏</h1>
+
+        <!-- 聊天框 -->
+        <div id="chat-box" style="border: 1px solid #ccc; height: 300px; overflow-y: scroll;"></div>
+
+        <!-- 消息输入 -->
+        <input id="message" type="text" placeholder="输入消息">
+        <button id="send-message">发送</button>
+
+        <!-- 弹出输入框的按钮 -->
+        <button id="popup-trigger">弹出输入框</button>
+
+        <!-- 弹出的输入框容器 -->
+        <div id="popup-container" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid #000; padding: 20px; background: #fff; z-index: 1000;">
+            <input id="popup-input" type="text" placeholder="输入内容后按回车">
+        </div>
+    </div>
+</body>
+</html>
