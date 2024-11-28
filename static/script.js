@@ -13,23 +13,49 @@ socket.on('new_message', (data) => {
     chatBox.appendChild(newMessage);
 });
 
+let players = {
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null,
+    6: null,
+    7: null,
+    8: null,
+    9: null,
+    10: null,
+    11: null,
+    12: null
+};
+
+let playerid = null;
+
 // 发送消息
-document.getElementById('send-message').addEventListener('click', () => {
-    const nickname = prompt("请输入你的昵称："); // 测试用昵称
-    const message = document.getElementById('message').value;
-    socket.emit('send_message', { nickname, message });
-    document.getElementById('message').value = '';
-});
 document.addEventListener('DOMContentLoaded', () => {
-    const popupTrigger = document.getElementById('popup-trigger');
     const popupContainer = document.getElementById('popup-container');
     const popupInput = document.getElementById('popup-input');
 
-    // 监听按钮点击事件，显示输入框
-    popupTrigger.addEventListener('click', () => {
-        popupContainer.style.display = 'block'; // 显示弹窗
-        popupInput.focus(); // 自动聚焦输入框
-    });
+    const playerNames = [
+        "1", "2", "3", "4", "5", "6",
+        "7", "8", "9", "10", "11", "12"
+    ];
+
+    for (let i = 1; i <= 12; i++) {
+        let playerDiv = document.getElementById(`player${i}`);
+
+        if (players[i]) {
+            // 如果有玩家，设置背景为红色并显示玩家的名字
+            playerDiv.style.backgroundColor = 'red';
+            playerDiv.textContent = players[i].slice(0, 2);  // 显示玩家名字的前两个字母
+        } else {
+            // 如果没有玩家，保持绿色背景
+            playerDiv.style.backgroundColor = 'green';  // 设置背景颜色为绿色
+            playerDiv.textContent = '';  // 没人时不显示文本
+        }
+    }
+
+    // 页面加载时自动弹出输入框
+    popupContainer.style.display = 'block';
 
     // 监听输入框的回车事件
     popupInput.addEventListener('keydown', (event) => {
@@ -43,12 +69,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ input: inputValue }), // 将输入内容作为 JSON 发送
+                    body: JSON.stringify({ input: inputValue }) // 发送用户输入
                 })
                 .then(response => response.json())
                 .then(data => {
                     console.log('服务器响应:', data);
-                    alert(data.message || '输入成功');
+                    messageContainer = document.getElementById('player1');
+                    messageContainer.textContent = data.input;
+                    playerid = data.input;
+                    let output = data.input;
+                    output = '欢迎,'+output;
+                    alert(output || '输入成功');
                 })
                 .catch(error => {
                     console.error('请求出错:', error);
@@ -63,3 +94,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+window.addEventListener('beforeunload', function (event) {
+    // 发送请求通知服务器玩家退出
+    fetch('/player-quit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ player_id: playerid })  // 假设有玩家 ID
+    });
+
+    // 你可以在这里添加额外的处理，例如保存玩家数据等
+});

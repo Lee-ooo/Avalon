@@ -20,6 +20,13 @@ class AvalonGame:
             self.audience.append(nickname)
             return False
 
+    def delete_player(self, nickname):
+        if nickname in self.players:
+            self.players.remove(nickname)
+            return True
+        else:
+            return False
+
     def start_game(self):
         """开始游戏"""
         if len(self.players) < 5:

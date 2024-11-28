@@ -1,3 +1,4 @@
+/* 全局样式 */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -16,19 +17,43 @@ body {
 
 .players {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 100%;
 }
 
 .player {
-    width: 50px;
-    height: 50px;
-    background-color: brown;
+    width: 60px;
+    height: 60px;
+    background-color: green;  /* 默认绿色背景，表示无人 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+}
+
+.avatar-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.player {
+    width: 60px;
+    height: 60px;
+    background-color: #4caf50;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 5px;
     border-radius: 50%;
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
 }
 
 .avatar.full {

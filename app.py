@@ -46,11 +46,17 @@ def submit_input():
 
     if user_input:
         print(f"Received user input: {user_input}")
-        # 你可以在这里执行其他逻辑，比如存储数据、验证输入等
-        return jsonify({"message": "输入已收到", "input": user_input})
+        if game.add_player(user_input):
+            return jsonify({"message": game.players, "input": user_input})
     else:
         return jsonify({"error": "没有输入内容"}), 400  # 返回400错误，表示没有输入内容
 
+@app.route('/player-quit', methods=['POST'])
+def player_quit():
+    data = request.get_json()
+    quit_id = data.get('player_id', None)
+    game.delete_player(quit_id)
+    return jsonify({"status": "success"}), 200
 
 if __name__ == '__main__':
     socketio.run(app)
